@@ -7,6 +7,11 @@ def makeCircle(x, y, r) :
 	return Circle(Point(x, y), r)
 
 class Field:
+
+	def __init__(self, fileName, win):
+		self.setTable(fileName)
+		self.setDraw(win)
+
 	def setTable(self, fileName) :
 		f = file(fileName, 'r')
 		strings = f.read().split('\n')
@@ -63,6 +68,7 @@ class Field:
 			self.allDraw[i].draw(win)
 
 class Character :
+
 	def setPositionPerson(self, x, y) :
 		self.flagOfDrawing = False
 		self.personX = x
@@ -94,10 +100,14 @@ class Character :
 		self.door.draw(win)
 
 class Game :
-	def setField(self, fileName) :
-		self.field = Field()
-		self.field.setTable(fileName)
-		#self.field.setDraw(win)			
+
+	def __init__(self, fileName, win):
+		self.setField(fileName, win)
+		self.setPerson()
+		self.setDraw(win)
+
+	def setField(self, fileName, win) :
+		self.field = Field(fileName, win)
 
 	def setPerson(self) :
 		x, y = self.field.getPositionOfPerson()
@@ -159,10 +169,7 @@ def main():
 	win = GraphWin("My Game", 500, 500)
 	win.setBackground(color_rgb(255, 0, 0))
 	
-	game = Game()
-	game.setField('table.in')
-	game.setPerson()
-	game.setDraw(win)
+	game = Game('table.in', win)
 	game.draw(win)
 
 	flag = True
