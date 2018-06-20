@@ -195,6 +195,14 @@ class Table:
         for i in range(len(self.allDrawing)):
             self.allDrawing[i].draw(win)
 
+    def checkVacantPositionOnTable(self):
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.table[i][j] == '0':
+                    return True
+
+        return False
+
 class Game:
     def __init__(self, size, win):
         my_table = Table(size, win)
@@ -216,6 +224,10 @@ class Game:
                 finalStr = "First gamer win!"
                 break
 
+            if not my_table.checkVacantPositionOnTable():
+                finalStr = "The table is full. Draw"
+                break
+            #copypast
             my_table.draw(win)
             while not flagSecond:
                 pt = win.getMouse()
@@ -229,6 +241,11 @@ class Game:
                 finalStr = "Second gamer win!"
                 break
 
+            if not my_table.checkVacantPositionOnTable():
+                finalStr = "The table is full. Draw"
+                break
+
+
         my_table.draw(win)
 
         txt = Text(Point(250, 250), finalStr + "\nClick anywhere.")
@@ -240,7 +257,7 @@ class Game:
 def main() :
     win = GraphWin("My Game", 250, 150)
     win.setBackground(color_rgb(255, 0, 0))
-    txt = Text(Point(100, 50), "Please, write size of table:")
+    txt = Text(Point(100, 50), "Please, write size of table\n (minimum value is 5):")
     txt.draw(win)
     input_box = Entry(Point(100, 100), 10)
     input_box.draw(win)
@@ -251,14 +268,21 @@ def main() :
         if key == 'Return':
             break
         size = int(input_box.getText())
-        txt.setText("Please, write size of table: " + input_box.getText())
+        txt.setText("Please, write size of table\n (minimum value is 5): " + input_box.getText())
     win.close()
 
-    win = GraphWin("My Game", 500, 500)
-    win.setBackground(color_rgb(0, 0, 0))
-    Game(size, win)
+    if size >= 5:
+        win = GraphWin("My Game", 500, 500)
+        win.setBackground(color_rgb(0, 0, 0))
+        Game(size, win)
+    else:
+        win = GraphWin("Not Game", 250, 150)
+        win.setBackground(color_rgb(255, 0, 0))
+        txt2 = Text(Point(100, 50), "You are stupid! \n Click anywhere.")
+        txt2.draw(win)
 
     win.getMouse() # Pause to view result
     win.close()    # Close window when done
 
 main()
+
