@@ -13,7 +13,7 @@ class Field:
 		self.setDraw(win)
 
 	def setTable(self, fileName) :
-		f = file(fileName, 'r')
+		f = open(fileName, 'r')
 		strings = f.read().split('\n')
 		n = len(strings)
 		self.table = []
